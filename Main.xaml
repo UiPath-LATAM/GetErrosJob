@@ -1,16 +1,17 @@
-<Activity mc:Ignorable="sap sap2010" x:Class="Main" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:sc="clr-namespace:System.Collections;assembly=System.Private.CoreLib" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<Activity mc:Ignorable="sap sap2010" x:Class="Main" this:Main.inQtdDay="2" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:sc="clr-namespace:System.Collections;assembly=System.Private.CoreLib" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib" xmlns:sd="clr-namespace:System.Data;assembly=System.Data.Common" xmlns:this="clr-namespace:" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
   <x:Members>
     <x:Property Name="outProcessName" Type="OutArgument(sd:DataTable)">
       <x:Property.Attributes>
         <RequiredArgumentAttribute />
       </x:Property.Attributes>
     </x:Property>
+    <x:Property Name="inQtdDay" Type="InArgument(x:Int32)" />
   </x:Members>
   <VisualBasic.Settings>
     <x:Null />
   </VisualBasic.Settings>
   <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
-  <sap:VirtualizedContainerService.HintSize>981,2654</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>981,3457</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="33">
@@ -107,7 +108,7 @@
       <AssemblyReference>System.Data.Common</AssemblyReference>
     </scg:List>
   </TextExpression.ReferencesForImplementation>
-  <Sequence DisplayName="GetErrorsJob" sap:VirtualizedContainerService.HintSize="871,2589" sap2010:WorkflowViewState.IdRef="Sequence_1">
+  <Sequence DisplayName="GetErrorsJobProcess" sap:VirtualizedContainerService.HintSize="944,3392" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="scg:IEnumerable(ui:OrchestratorJob)" Name="oFailedJobs" />
       <Variable x:TypeArguments="sd:DataTable" Name="dictProc" />
@@ -119,17 +120,17 @@
         <x:Boolean x:Key="IsExpanded">True</x:Boolean>
       </scg:Dictionary>
     </sap:WorkflowViewStateService.ViewState>
-    <ui:LogMessage DisplayName="Initializing Process" sap:VirtualizedContainerService.HintSize="809,92" sap2010:WorkflowViewState.IdRef="LogMessage_2">
+    <ui:LogMessage DisplayName="InitializingProcess" sap:VirtualizedContainerService.HintSize="882,141" sap2010:WorkflowViewState.IdRef="LogMessage_2">
       <ui:LogMessage.Message>
         <InArgument x:TypeArguments="x:Object">
           <CSharpValue x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpValue`1_66">"Get ErrorJob Process started."</CSharpValue>
         </InArgument>
       </ui:LogMessage.Message>
     </ui:LogMessage>
-    <ui:GetJobs DisplayName="GetErrorJobs" FolderPath="Shared" sap:VirtualizedContainerService.HintSize="809,168" sap2010:WorkflowViewState.IdRef="GetJobs_1">
+    <ui:GetJobs DisplayName="GetErrorJobs" FolderPath="Shared" sap:VirtualizedContainerService.HintSize="882,467" sap2010:WorkflowViewState.IdRef="GetJobs_1">
       <ui:GetJobs.Filter>
         <InArgument x:TypeArguments="x:String">
-          <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_57" xml:space="preserve">"(State eq 'Stopped' or State eq 'Faulted') and StartTime ge " + DateTime.Today.AddDays(-1) .ToString("yyyy-MM-dd") +  " and StartTime lt " + DateTime.Today.ToString("yyyy-MM-dd") + " and Source ne 'Manual'"</CSharpValue>
+          <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_91" xml:space="preserve">"(State eq 'Stopped' or State eq 'Faulted') and StartTime ge " + DateTime.Today.AddDays(-inQtdDay).ToString("yyyy-MM-dd") +  " and StartTime le " + DateTime.Today.ToString("yyyy-MM-dd") + " and Source ne 'Manual'"</CSharpValue>
         </InArgument>
       </ui:GetJobs.Filter>
       <ui:GetJobs.Result>
@@ -156,26 +157,26 @@
         </scg:Dictionary>
       </sap:WorkflowViewStateService.ViewState>
     </ui:GetJobs>
-    <ui:BuildDataTable DisplayName="DataTable for Output" sap:VirtualizedContainerService.HintSize="809,60" sap2010:WorkflowViewState.IdRef="BuildDataTable_1" TableInfo="&lt;NewDataSet&gt;&#xA;  &lt;xs:schema id=&quot;NewDataSet&quot; xmlns=&quot;&quot; xmlns:xs=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:msdata=&quot;urn:schemas-microsoft-com:xml-msdata&quot;&gt;&#xA;    &lt;xs:element name=&quot;NewDataSet&quot; msdata:IsDataSet=&quot;true&quot; msdata:MainDataTable=&quot;TableName&quot; msdata:UseCurrentLocale=&quot;true&quot;&gt;&#xA;      &lt;xs:complexType&gt;&#xA;        &lt;xs:choice minOccurs=&quot;0&quot; maxOccurs=&quot;unbounded&quot;&gt;&#xA;          &lt;xs:element name=&quot;TableName&quot;&gt;&#xA;            &lt;xs:complexType&gt;&#xA;              &lt;xs:sequence&gt;&#xA;                &lt;xs:element name=&quot;nome&quot; msdata:Caption=&quot;&quot;&gt;&#xA;                  &lt;xs:simpleType&gt;&#xA;                    &lt;xs:restriction base=&quot;xs:string&quot;&gt;&#xA;                      &lt;xs:maxLength value=&quot;100&quot; /&gt;&#xA;                    &lt;/xs:restriction&gt;&#xA;                  &lt;/xs:simpleType&gt;&#xA;                &lt;/xs:element&gt;&#xA;                &lt;xs:element name=&quot;dataExec&quot; msdata:Caption=&quot;&quot; minOccurs=&quot;0&quot;&gt;&#xA;                  &lt;xs:simpleType&gt;&#xA;                    &lt;xs:restriction base=&quot;xs:string&quot;&gt;&#xA;                      &lt;xs:maxLength value=&quot;100&quot; /&gt;&#xA;                    &lt;/xs:restriction&gt;&#xA;                  &lt;/xs:simpleType&gt;&#xA;                &lt;/xs:element&gt;&#xA;              &lt;/xs:sequence&gt;&#xA;            &lt;/xs:complexType&gt;&#xA;          &lt;/xs:element&gt;&#xA;        &lt;/xs:choice&gt;&#xA;      &lt;/xs:complexType&gt;&#xA;    &lt;/xs:element&gt;&#xA;  &lt;/xs:schema&gt;&#xA;&lt;/NewDataSet&gt;">
-      <ui:BuildDataTable.DataTable>
-        <OutArgument x:TypeArguments="sd:DataTable">
-          <CSharpReference x:TypeArguments="sd:DataTable" sap2010:WorkflowViewState.IdRef="CSharpReference`1_16">outProcessName</CSharpReference>
-        </OutArgument>
-      </ui:BuildDataTable.DataTable>
-    </ui:BuildDataTable>
-    <ui:ForEach x:TypeArguments="ui:OrchestratorJob" CurrentIndex="{x:Null}" DisplayName="NavigatingThroughErrorJobs" sap:VirtualizedContainerService.HintSize="809,1906" sap2010:WorkflowViewState.IdRef="ForEach`1_1">
+    <ui:InvokeCode ContinueOnError="{x:Null}" Code="outProcessName = new DataTable();&#xA;outProcessName.Columns.Add(new DataColumn(&quot;nome&quot;));&#xA;outProcessName.Columns.Add(new DataColumn(&quot;dataExec&quot;));" DisplayName="CreatingDataTableResults" sap:VirtualizedContainerService.HintSize="882,215" sap2010:WorkflowViewState.IdRef="InvokeCode_1" Language="CSharp">
+      <ui:InvokeCode.Arguments>
+        <InOutArgument x:TypeArguments="sd:DataTable" x:Key="outProcessName">
+          <CSharpReference x:TypeArguments="sd:DataTable" sap2010:WorkflowViewState.IdRef="CSharpReference`1_29">outProcessName</CSharpReference>
+        </InOutArgument>
+      </ui:InvokeCode.Arguments>
+    </ui:InvokeCode>
+    <ui:ForEach x:TypeArguments="ui:OrchestratorJob" CurrentIndex="{x:Null}" DisplayName="NavigatingThroughErrorJobs" sap:VirtualizedContainerService.HintSize="882,2157" sap2010:WorkflowViewState.IdRef="ForEach`1_1">
       <ui:ForEach.Body>
         <ActivityAction x:TypeArguments="ui:OrchestratorJob">
           <ActivityAction.Argument>
             <DelegateInArgument x:TypeArguments="ui:OrchestratorJob" Name="currentItem" />
           </ActivityAction.Argument>
-          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="773,1781" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <Sequence DisplayName="Body" sap:VirtualizedContainerService.HintSize="804,1947" sap2010:WorkflowViewState.IdRef="Sequence_2">
             <sap:WorkflowViewStateService.ViewState>
               <scg:Dictionary x:TypeArguments="x:String, x:Object">
                 <x:Boolean x:Key="IsExpanded">True</x:Boolean>
               </scg:Dictionary>
             </sap:WorkflowViewStateService.ViewState>
-            <If DisplayName="ChecEligiblekErrorJobs" sap:VirtualizedContainerService.HintSize="711,1670" sap2010:WorkflowViewState.IdRef="If_1">
+            <If DisplayName="ChecEligiblekErrorJobs" sap:VirtualizedContainerService.HintSize="742,1836" sap2010:WorkflowViewState.IdRef="If_1">
               <If.Condition>
                 <InArgument x:TypeArguments="x:Boolean">
                   <CSharpValue x:TypeArguments="x:Boolean" sap2010:WorkflowViewState.IdRef="CSharpValue`1_51">dtRow == null || !currentItem.ProcessName.Equals(dtRow["nome"])</CSharpValue>
@@ -188,7 +189,7 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
               <If.Then>
-                <Sequence sap:VirtualizedContainerService.HintSize="633,1394" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                <Sequence DisplayName="Body-ChecEligiblekErrorJobs" sap:VirtualizedContainerService.HintSize="664,1560" sap2010:WorkflowViewState.IdRef="Sequence_3">
                   <Sequence.Variables>
                     <Variable x:TypeArguments="scg:IEnumerable(ui:OrchestratorJob)" Name="oSucJobs" />
                   </Sequence.Variables>
@@ -197,15 +198,18 @@
                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
-                  <ui:GetJobs DisplayName="Get Jobs" FolderPath="Shared" sap:VirtualizedContainerService.HintSize="571,467" sap2010:WorkflowViewState.IdRef="GetJobs_2">
+                  <ui:GetJobs DisplayName="GetSuccessJob" FolderPath="Shared" sap:VirtualizedContainerService.HintSize="602,467" sap2010:WorkflowViewState.IdRef="GetJobs_2">
                     <ui:GetJobs.Filter>
                       <InArgument x:TypeArguments="x:String">
-                        <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_68" xml:space="preserve">"State eq 'Successful' and StartTime ge " + DateTime.Today.AddDays(-1) .ToString("yyyy-MM-dd") +  " and StartTime lt " + DateTime.Today.ToString("yyyy-MM-dd") + " and Source eq 'Manual' and ReleaseName eq '" + currentItem.ProcessName + "'"</CSharpValue>
+                        <CSharpValue x:TypeArguments="x:String" sap2010:WorkflowViewState.IdRef="CSharpValue`1_92" xml:space="preserve">"(State eq 'Successful' or State eq 'Running') and StartTime ge " + DateTime.Today.AddDays(-inQtdDay) .ToString("yyyy-MM-dd") +  " and StartTime le " + DateTime.Today.ToString("yyyy-MM-dd") + " and ReleaseName eq '" + currentItem.ProcessName + "'"</CSharpValue>
                       </InArgument>
                     </ui:GetJobs.Filter>
                     <ui:GetJobs.Result>
                       <OutArgument x:TypeArguments="scg:IEnumerable(ui:OrchestratorJob)">
-                        <CSharpReference x:TypeArguments="scg:IEnumerable(ui:OrchestratorJob)" sap2010:WorkflowViewState.IdRef="CSharpReference`1_24">oSucJobs</CSharpReference>
+                        <CSharpReference x:TypeArguments="scg:IEnumerable(ui:OrchestratorJob)" sap2010:WorkflowViewState.IdRef="CSharpReference`1_24">
+                          <CSharpReference.Result>
+                            <OutArgument x:TypeArguments="Location(scg:IEnumerable(ui:OrchestratorJob))" />
+                          </CSharpReference.Result>oSucJobs</CSharpReference>
                       </OutArgument>
                     </ui:GetJobs.Result>
                     <ui:GetJobs.Skip>
@@ -224,62 +228,63 @@
                       </scg:Dictionary>
                     </sap:WorkflowViewStateService.ViewState>
                   </ui:GetJobs>
-                  <If DisplayName="CheckSuccessRepliedJob" sap:VirtualizedContainerService.HintSize="571,776" sap2010:WorkflowViewState.IdRef="If_2">
+                  <If DisplayName="CheckSuccessRepliedJob" sap:VirtualizedContainerService.HintSize="602,942" sap2010:WorkflowViewState.IdRef="If_2">
                     <If.Condition>
                       <InArgument x:TypeArguments="x:Boolean">
                         <CSharpValue x:TypeArguments="x:Boolean" sap2010:WorkflowViewState.IdRef="CSharpValue`1_59">oSucJobs.Count() == 0</CSharpValue>
                       </InArgument>
                     </If.Condition>
                     <If.Then>
-                      <Sequence sap:VirtualizedContainerService.HintSize="493,500" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                      <Sequence DisplayName="Body-CheckSuccessRepliedJob" sap:VirtualizedContainerService.HintSize="524,666" sap2010:WorkflowViewState.IdRef="Sequence_4">
                         <sap:WorkflowViewStateService.ViewState>
                           <scg:Dictionary x:TypeArguments="x:String, x:Object">
                             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                           </scg:Dictionary>
                         </sap:WorkflowViewStateService.ViewState>
-                        <ui:MultipleAssign DisplayName="Output Preparation" sap:VirtualizedContainerService.HintSize="431,163" sap2010:WorkflowViewState.IdRef="MultipleAssign_1">
-                          <ui:MultipleAssign.AssignOperations>
-                            <scg:List x:TypeArguments="ui:AssignOperation" Capacity="4">
-                              <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_1">
-                                <ui:AssignOperation.To>
-                                  <OutArgument x:TypeArguments="sd:DataRow">
-                                    <CSharpReference x:TypeArguments="sd:DataRow" sap2010:WorkflowViewState.IdRef="CSharpReference`1_18">dtRow</CSharpReference>
-                                  </OutArgument>
-                                </ui:AssignOperation.To>
-                                <ui:AssignOperation.Value>
-                                  <InArgument x:TypeArguments="sd:DataRow">
-                                    <CSharpValue x:TypeArguments="sd:DataRow" sap2010:WorkflowViewState.IdRef="CSharpValue`1_31">outProcessName.NewRow()</CSharpValue>
-                                  </InArgument>
-                                </ui:AssignOperation.Value>
-                              </ui:AssignOperation>
-                              <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_3">
-                                <ui:AssignOperation.To>
-                                  <OutArgument x:TypeArguments="x:Object">
-                                    <CSharpReference x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpReference`1_20">dtRow["nome"]</CSharpReference>
-                                  </OutArgument>
-                                </ui:AssignOperation.To>
-                                <ui:AssignOperation.Value>
-                                  <InArgument x:TypeArguments="x:Object">
-                                    <CSharpValue x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpValue`1_33">currentItem.ProcessName</CSharpValue>
-                                  </InArgument>
-                                </ui:AssignOperation.Value>
-                              </ui:AssignOperation>
-                              <ui:AssignOperation sap2010:WorkflowViewState.IdRef="AssignOperation_4">
-                                <ui:AssignOperation.To>
-                                  <OutArgument x:TypeArguments="x:Object">
-                                    <CSharpReference x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpReference`1_21">dtRow["dataExec"]</CSharpReference>
-                                  </OutArgument>
-                                </ui:AssignOperation.To>
-                                <ui:AssignOperation.Value>
-                                  <InArgument x:TypeArguments="x:Object">
-                                    <CSharpValue x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpValue`1_34">currentItem.EndTime.ToString()</CSharpValue>
-                                  </InArgument>
-                                </ui:AssignOperation.Value>
-                              </ui:AssignOperation>
-                            </scg:List>
-                          </ui:MultipleAssign.AssignOperations>
-                        </ui:MultipleAssign>
-                        <ui:AddDataRow ArrayRow="{x:Null}" DisplayName="Add Data for Output" sap:VirtualizedContainerService.HintSize="431,186" sap2010:WorkflowViewState.IdRef="AddDataRow_2">
+                        <Sequence DisplayName="OutputPreparation" sap:VirtualizedContainerService.HintSize="462,374" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                          <Assign sap:VirtualizedContainerService.HintSize="400,61" sap2010:WorkflowViewState.IdRef="Assign_1">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="sd:DataRow">
+                                <CSharpReference x:TypeArguments="sd:DataRow" sap2010:WorkflowViewState.IdRef="CSharpReference`1_25">dtRow</CSharpReference>
+                              </OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="sd:DataRow">
+                                <CSharpValue x:TypeArguments="sd:DataRow" sap2010:WorkflowViewState.IdRef="CSharpValue`1_69">outProcessName.NewRow()</CSharpValue>
+                              </InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <Assign sap:VirtualizedContainerService.HintSize="400,61" sap2010:WorkflowViewState.IdRef="Assign_2">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Object">
+                                <CSharpReference x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpReference`1_26">dtRow["nome"]</CSharpReference>
+                              </OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Object">
+                                <CSharpValue x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpValue`1_70">currentItem.ProcessName</CSharpValue>
+                              </InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <Assign sap:VirtualizedContainerService.HintSize="400,61" sap2010:WorkflowViewState.IdRef="Assign_3">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Object">
+                                <CSharpReference x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpReference`1_27">dtRow["dataExec"]</CSharpReference>
+                              </OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Object">
+                                <CSharpValue x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpValue`1_71">currentItem.EndTime.ToString()</CSharpValue>
+                              </InArgument>
+                            </Assign.Value>
+                          </Assign>
+                        </Sequence>
+                        <ui:AddDataRow ArrayRow="{x:Null}" DisplayName="PreparingDataTableResults" sap:VirtualizedContainerService.HintSize="462,141" sap2010:WorkflowViewState.IdRef="AddDataRow_2">
                           <ui:AddDataRow.DataRow>
                             <InArgument x:TypeArguments="sd:DataRow">
                               <CSharpValue x:TypeArguments="sd:DataRow" sap2010:WorkflowViewState.IdRef="CSharpValue`1_35">dtRow</CSharpValue>
@@ -306,7 +311,7 @@
         </InArgument>
       </ui:ForEach.Values>
     </ui:ForEach>
-    <ui:LogMessage DisplayName="Log Message" sap:VirtualizedContainerService.HintSize="809,92" sap2010:WorkflowViewState.IdRef="LogMessage_1">
+    <ui:LogMessage DisplayName="FinishingProcess" sap:VirtualizedContainerService.HintSize="882,141" sap2010:WorkflowViewState.IdRef="LogMessage_1">
       <ui:LogMessage.Message>
         <InArgument x:TypeArguments="x:Object">
           <CSharpValue x:TypeArguments="x:Object" sap2010:WorkflowViewState.IdRef="CSharpValue`1_67">"Get ErrorJob Process Finished."</CSharpValue>
