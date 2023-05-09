@@ -12,7 +12,7 @@
     <x:Null />
   </VisualBasic.Settings>
   <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
-  <sap:VirtualizedContainerService.HintSize>1475,2925</sap:VirtualizedContainerService.HintSize>
+  <sap:VirtualizedContainerService.HintSize>1573,2925</sap:VirtualizedContainerService.HintSize>
   <sap2010:WorkflowViewState.IdRef>ActivityBuilder_1</sap2010:WorkflowViewState.IdRef>
   <TextExpression.NamespacesForImplementation>
     <scg:List x:TypeArguments="x:String" Capacity="33">
@@ -327,7 +327,7 @@ select s</CSharpValue>
                   <If DisplayName="CheckSuccessRepliedJob" sap:VirtualizedContainerService.HintSize="588,888" sap2010:WorkflowViewState.IdRef="If_2">
                     <If.Condition>
                       <InArgument x:TypeArguments="x:Boolean">
-                        <CSharpValue x:TypeArguments="x:Boolean" sap2010:WorkflowViewState.IdRef="CSharpValue`1_112">oSucJobs.First().StartTime &lt; currentOrchestratorJob.StartTime</CSharpValue>
+                        <CSharpValue x:TypeArguments="x:Boolean" sap2010:WorkflowViewState.IdRef="CSharpValue`1_114">oSucJobs.Count() &lt; 1 || oSucJobs.First().StartTime &lt; currentOrchestratorJob.StartTime</CSharpValue>
                       </InArgument>
                     </If.Condition>
                     <If.Then>
